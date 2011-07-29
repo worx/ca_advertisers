@@ -1,0 +1,30 @@
+<?php
+
+function ca_advertisers_install() {
+  $queue = new stdClass;
+  $queue->new = TRUE;
+  $queue->title = 'Featured Advertisers';
+  $queue->name = 'ca_advertisers_featured_advertisers';
+  $queue->subqueue_title = 'Featured Advertisers';
+  $queue->size = '0';
+  $queue->link = 'Feature to Front';
+  $queue->link_remove = 'Unfeature to Front';
+  $queue->owner = 'ca_advertisers';
+  $queue->show_in_links = 1;
+  $queue->show_in_tab = 1;
+  $queue->show_in_ui = 1;
+  $queue->il8n = 0;
+  $queue->reverse = 1;
+  $queue->reference = 0;
+  $queue->roles = array();
+  $queue->types = array('ca_advertisers');
+  $queue->add_subqueue = array(
+    'title' => 'Featured Advertisers',
+  );
+  nodequeue_save(&$queue);
+}
+
+function ca_advertisers_uninstall() {
+  $qid = db_result(db_query("SELECT qid FROM {nodequeue_queue} WHERE name = 'ca_advertisers_featured_advertisers'"));
+  nodequeue_delete($qid);
+}
